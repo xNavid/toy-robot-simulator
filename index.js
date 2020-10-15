@@ -53,6 +53,73 @@ const isValidPlacement = ({ x, y, facing }) => {
     return true;
 };
 
+// Move the robot
+const move = (currentPosition) => {
+    switch(currentPosition.facing) {
+        case 'NORTH': 
+            if (currentPosition.y + 1 <= boardSize.maxY)
+                currentPosition.y  = currentPosition.y + 1;
+            break;
+        case 'EAST': 
+            if (currentPosition.x + 1 <= boardSize.maxX)
+                currentPosition.x  = currentPosition.x + 1;
+            break;
+        case 'SOUTH': 
+            if (currentPosition.y - 1 >= boardSize.minY)
+                currentPosition.y = currentPosition.y - 1;
+            break;
+        case 'WEST': 
+            if (currentPosition.x - 1 >= boardSize.minX)
+                currentPosition.x = currentPosition.x - 1;
+        default: 
+            break;
+    };
+
+    return currentPosition;
+};
+
+const changeDirection = (currentPosition, direction) => {
+    if (direction === 'LEFT') {
+        switch(currentPosition.facing) {
+            case 'NORTH': 
+                currentPosition.facing = 'WEST';
+                break;
+            case 'EAST':
+                currentPosition.facing = 'NORTH';
+                break;
+            case 'SOUTH': 
+                currentPosition.facing = 'EAST';
+                break;
+            case 'WEST': 
+                currentPosition.facing = 'SOUTH';
+                break;
+            default:
+                break;
+        }
+    }
+
+    if (direction === 'RIGHT') {
+        switch(currentPosition.facing) {
+            case 'NORTH': 
+                currentPosition.facing = 'EAST';
+                break;
+            case 'EAST':
+                currentPosition.facing = 'SOUTH';
+                break;
+            case 'SOUTH': 
+                currentPosition.facing = 'WEST';
+                break;
+            case 'WEST': 
+                currentPosition.facing = 'NORTH';
+                break;
+            default:
+                break;
+        }
+    }
+
+    return currentPosition;
+};
+
 process.stdin.on('data', (input) => {
     const command = readCommand(input);
 
@@ -71,67 +138,19 @@ process.stdin.on('data', (input) => {
             break;
         case 'MOVE': 
             if (isPlaced === false) return console.log('Need to place first');
-            switch(currentPosition.facing) {
-                case 'NORTH': 
-                    if (currentPosition.y + 1 <= boardSize.maxY)
-                        currentPosition.y  = currentPosition.y + 1;
-                    break;
-                case 'EAST': 
-                    if (currentPosition.x + 1 <= boardSize.maxX)
-                        currentPosition.x  = currentPosition.x + 1;
-                    break;
-                case 'SOUTH': 
-                    if (currentPosition.y - 1 >= boardSize.minY)
-                        currentPosition.y = currentPosition.y - 1;
-                    break;
-                case 'WEST': 
-                    if (currentPosition.x - 1 >= boardSize.minX)
-                        currentPosition.x = currentPosition.x - 1;
-                default: 
-                    break;
-            }
+            currentPosition = move(currentPosition);
             break;
         case 'LEFT': 
         if (isPlaced === false) return console.log('Need to place first');
-            switch(currentPosition.facing) {
-                case 'NORTH': 
-                    currentPosition.facing = 'WEST';
-                    break;
-                case 'EAST':
-                    currentPosition.facing = 'NORTH';
-                    break;
-                case 'SOUTH': 
-                    currentPosition.facing = 'EAST';
-                    break;
-                case 'WEST': 
-                    currentPosition.facing = 'SOUTH';
-                    break;
-                default:
-                    break;
-            }
+            currentPosition = changeDirection(currentPosition, 'LEFT');
             break;
         case 'RIGHT': 
         if (isPlaced === false) return console.log('Need to place first');
-            switch(currentPosition.facing) {
-                case 'NORTH': 
-                    currentPosition.facing = 'EAST';
-                    break;
-                case 'EAST':
-                    currentPosition.facing = 'SOUTH';
-                    break;
-                case 'SOUTH': 
-                    currentPosition.facing = 'WEST';
-                    break;
-                case 'WEST': 
-                    currentPosition.facing = 'NORTH';
-                    break;
-                default:
-                    break;
-            }
+            currentPosition = changeDirection(currentPosition, 'RIGHT');
             break;
         case 'REPORT':
             if (isPlaced === false) return console.log('Need to place first');
-            console.log(currentPosition);
+            console.log(`${currentPosition.x},${currentPosition.y},${currentPosition.facing}`);
             break;
         default: 
             console.log('Invalid command');
