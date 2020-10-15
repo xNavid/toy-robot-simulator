@@ -1,0 +1,22 @@
+{
+  "name": "toy-robot-simulator",
+  "version": "1.0.0",
+  "description": "Toy Robot Simulation App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xNavid/toy-robot-simulator.git"
+  },
+  "author": "Navid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xNavid/toy-robot-simulator/issues"
+  },
+  "homepage": "https://github.com/xNavid/toy-robot-simulator#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
